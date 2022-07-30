@@ -174,3 +174,116 @@ int main()
   * ***IEEE 754***<img src="test_07_29\test_07_29\图片\浮点型数据-ieee754_1.jpg"/>
   * ***IEEE 754***<img src="test_07_29\test_07_29\图片\浮点型数据-ieee754_2.jpg"/>
   * 运行结果<img src="test_07_29\test_07_29\图片\浮点型数据-例子.jpg"/>
+
+---
+## 第2节 指针的进阶
+* 1.字符指针
+* 2.数组指针
+* 3.指针数组
+* 4.数组传参和指针传参
+* 5.函数指针
+* 6.函数指针数组
+* 7.指向函数指针数组的指针
+* 8.回调函数
+* 9.指针和数组题解析
+---
+### 字符指针
+* **Q1.常量字符串1**
+```c
+//segmentfault	内存访问
+int main()
+{
+	const char* p = "abcdef";	//"abcdef"是个常量字符串
+	//*p='W';
+	printf("%s\n", p);
+	return 0;
+}
+```
+注：常量字符串不可改
+
+* **Q2.常量字符串2**
+```c
+int main()
+{
+	char arr1[] = "haomo";
+	char arr2[] = "haomo";
+	char* p1 = "haomo";
+	char* p2 = "haomo";
+	if (arr1 == arr2)
+		printf("arr1与arr2相等\n");
+	if (p1 == p2)
+		printf("p1与p2一样\n");
+
+	return 0;
+}
+```
+* p1与p2一样
+
+### 指针数组
+```c
+int main()
+{
+	int arr1[] = { 1,2,3 };
+	int arr2[] = { 2,3,4 };
+	int arr3[] = { 4,5,6 };
+	int* p[] = { arr1,arr2,arr3 };
+	int i = 0;
+	for (i = 0; i < 3; i++)
+	{
+		int j = 0;
+		for (j = 0; j < 3; j++)
+		{
+			printf("%d ", *(p[i]+j));
+		}
+		printf("\n");
+	}
+	return 0;
+}
+```
+注：类似遍历二维数组，矩阵
+
+### 数组指针、传参（数组、指针）
+```c
+//数组 指针传参、数组指针
+//数组传参
+void print1(int arr[3][5], int x, int y)
+{
+	int i = 0;
+	for (i = 0; i < x; i++)				//范围
+	{
+		int j = 0;
+		for (j = 0; j < y; j++)			//范围
+		{
+			printf("%d ", arr[i][j]);
+		}
+		printf("\n");
+	}
+}
+//指针传参
+void print2(int(*p)[5],int x,int y)
+{
+	int i = 0;
+	for (i = 0; i < x; i++)
+	{
+		int j = 0;
+		for (j = 0; j < y; j++)
+		{
+			printf("%d ", p[i][j]);//最终
+			//printf("%d ", *(p[i]+j));//简化
+			//printf("%d ", (*(p + i))[j]);//简化
+			//printf("%d ", *(*(p + i) + j));//原始版
+		}
+		printf("\n");
+	}
+}
+int main()
+{
+	int arr[3][5] = { {1,2,3,4,5},{2,4,6,8,10},{3,5,7,9,11} };
+	print1(arr, 3, 5);//    数组传参
+	print2(arr, 3, 5);//数组指针传参
+	return 0;
+}
+```
+注：
+* int(*p)[5]，数组指针
+* p[i][j]等效于*(*(p+i)+j)或(*(p+i))[j]或*(p[i]+j)),[]起到了<font color='red'>**加解**</font>
