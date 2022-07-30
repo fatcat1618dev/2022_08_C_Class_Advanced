@@ -270,16 +270,70 @@
 //	}
 //	return 0;
 //}
-//
-////死循环
-#include<stdio.h>
-#include<string.h>
+
+//////死循环
+//#include<stdio.h>
+//#include<string.h>
+//int main()
+//{
+//	char arr1[]= "abcde0abc";		//位置6，0
+//	printf("%d\n", strlen(arr1));
+//	printf("%s\n", arr1);	
+//	char arr2[] = "abcde0abc";
+//	arr2[2] =(char)0 ;
+//	printf("%s\n", arr2);
+//	return 0;
+//}
+
+//int main()
+//{
+//	char a[1000];
+//	int i;
+//	for (i = 0; i < 1000; i++)
+//	{
+//		a[i] = -1 - i;
+//	}
+//	printf("%d", strlen(a));
+//	return 0;
+//}
+
+//数据范围，头文件有定义
+//D:\ProgramFiles\vs2019\VC\Tools\MSVC\14.29.30133\include
+//#include<limits.h>
+//#include<float.h>
+
+//整型、浮点型内存存储形式不一样
+//参考IEEE 754规定
 int main()
 {
-	char arr1[]= "abcde0abc";
-	printf("%d\n", strlen(arr1));
-	printf("%s", arr1);	
+	//整型存入
+	int n = 9;
+	float* p = (float*)&n;
+	//00000000 00000000 00000000 00001001	补码
+	//0 00000000 000 0000000000 0000001001	按浮点数解读
+	//(-1)^0 * 2^(1-127)*0.00000000000000000001001	
+	printf("n的值 ：%d\n", n);	//9
+	printf("*p的值：%f\n", *p);	//0.000000
 
+	//浮点型存入
+	*p = 9.0;
+	//9.0
+	//1001.0	二进制
+	//1.001*2^3	指数变为3+127
+	//0 10000010 001 0000000000 0000000000 内存存储值，电脑计算器可算为1091567616
+
+	printf("n的值 ：%d\n", n);//1091567616
+	printf("*p的值：%f\n", *p);//9.000000
+
+	//举例1
+	float f = -2.5;
+	//-2.5
+	//-10.1 二进制
+	//-1.01 * 2^1	指数+127,变为128
+	//1 10000000 010 0000000000 0000000000，内存存储值C0200000，可查内存也为000020c0小端，和计算的一致
+	//
 	return 0;
 }
+
+
 
