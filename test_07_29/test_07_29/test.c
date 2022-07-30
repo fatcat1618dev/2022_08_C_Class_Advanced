@@ -272,3 +272,14 @@
 //}
 //
 ////À¿—≠ª∑
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+	char arr1[]= "abcde0abc";
+	printf("%d\n", strlen(arr1));
+	printf("%s", arr1);	
+
+	return 0;
+}
+
