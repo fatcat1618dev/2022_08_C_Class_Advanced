@@ -550,7 +550,7 @@ int main()
 	char arr[] = { 'a','b','c','d' };
 	
 	printf("%d\n", strlen(*arr));		//16，和sizeof(a)一样
-	printf("%d\n", strlen(arr[1]));		//16，和sizeof(a)一样
+	printf("%d\n", sizeof(arr[1]));		//16，和sizeof(a)一样
 
 
 	return 0;

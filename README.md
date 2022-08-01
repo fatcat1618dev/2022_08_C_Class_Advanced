@@ -17,7 +17,7 @@
 * 注：limits.h,float.h
 ---
 ### 整型存储
-#### Q1：char范围导致的死循环
+* **Q1：char范围导致的死循环**
 ```c
 unsigned char i = 0;
 int main()
@@ -33,7 +33,7 @@ int main()
 * char范围,0-255
 * char圈，循环往复
 
-#### Q2：字符串长度
+* **Q2：字符串长度**
 ```c
 int main()
 {
@@ -52,7 +52,7 @@ int main()
 * char圈,有符号char:0～127,-128,-127...-1
 * ASCII码表![ASCII码表](http://cuihuan.net/wp_content/new/finance/ASCII.png)
 
-#### Q3:无符号int导致的死循环
+* **Q3:无符号int导致的死循环**
 ```c
 main()
 {
@@ -66,7 +66,7 @@ main()
 ```
 注：死循环，-1若u则超大数字
 
-#### Q4.char范围（-128与128关系、char圆圈）
+* **Q4.char范围（-128与128关系、char圆圈）**
 ```c
 int main()
 {
@@ -79,7 +79,7 @@ int main()
 ```
 注：相等，打印hello
 
-#### Q5.负数的原反补（整型提升）
+* **Q5.负数的原反补（整型提升）**
 ```c
 int main()
 {
@@ -94,7 +94,7 @@ int main()
 * u为无符号型，超大数字ffffff80
 * -128
 
-#### Q6.系统字节序（大端/小端）
+* **Q6.系统字节序（大端/小端）**
 ```c
 int check_sys()
 {
@@ -117,7 +117,7 @@ int main()
 * 返回系统字节序大端、小端；
 * 数字高位对应内存地址高位则小端机器，平时使用的基本是小端机器
 
-#### Q7.负数的原反补（整型提升、截断）
+* **Q7.负数的原反补（整型提升、截断）**
 ```c
 int main()
 {
@@ -135,9 +135,9 @@ int main()
 ---
 ### 浮点型存储
 
-#### Q1.计算-2.5浮点型存储序列
-* //整型、浮点型内存存储形式不一样
-* //参考IEEE 754规定
+* **Q1.计算-2.5浮点型存储序列**
+  * //整型、浮点型内存存储形式不一样
+  * //参考IEEE 754规定
 ```c
 int main()
 {
@@ -243,6 +243,8 @@ int main()
 注：类似遍历二维数组，矩阵
 
 ### 数组指针、传参（数组、指针）
+* 二维数组传参，形参只能省略第1个[],即行数，如void test(int *arr[][5])
+
 ```c
 //数组 指针传参、数组指针
 //数组传参
@@ -286,4 +288,296 @@ int main()
 ```
 注：
 * int(*p)[5]，数组指针
-* p[i][j]等效于*(*(p+i)+j)或(*(p+i))[j]或*(p[i]+j)),[]起到了<font color='red'>**加解**</font>
+* p[i][j]等效于\*(\*(p+i)+j)或(\*(p+i))[j]或*(p[i]+j)),[]起到了<font color='red'>**加解**</font>
+
+### 函数指针、函数指针数组、回调函数等
+* 典型语句理解
+```c
+(* (void(*)()0)();
+//把0强制转为void(*)()函数指针类型，调用0地址处的该函数
+void(*signal(int, void(*)(int)))(int)////void(*)(int)//signal(int, void(*)(int))
+//signal是1个函数声明，有2个参数，第1个是int，第2个是函数指针，该函数指针指向函数参数int，返回类型void
+//signal函数的返回类型也是1个函数指针，该函数指针指向的函数的参数是int,返回类型是void
+```
+* 计算器-函数指针版
+```c
+int	Add(int x, int y)
+{
+	return x + y;
+}
+int	Sub(int x, int y)
+{
+	return x - y;
+}
+int	Mul(int x, int y)
+{
+	return x * y;
+}
+int	Div(int x, int y)
+{
+	return x / y;
+}
+void menu()
+{
+	printf("*****************************\n");
+	printf("******  1.Add    2.Sub  *****\n");
+	printf("********3.Mul    4.Div  *****\n");
+	printf("********0.Exit***************\n");
+}
+Calc(int(*p)(int, int))
+{
+	int x = 0;
+	int y = 0;
+	printf("请输入两个操作数:>");
+	scanf("%d%d", &x, &y);
+	printf("%d\n", p(x, y));
+}
+int main()
+{
+	int input = 0;
+	do
+	{
+		menu();
+		printf("请选择:>");
+		scanf("%d", &input);
+		switch (input)
+		{
+		case 1:
+			Calc(Add);
+			break;
+		case 2:
+			Calc(Sub);
+			break;
+		case 3:
+			Calc(Mul);
+			break;
+		case 4:
+			Calc(Div);
+			break;
+		default:
+			break;
+		}
+	} while (input);
+
+	return 0;
+}
+```
+* 计算器-函数指针数组版
+```c
+int	Add(int x, int y)
+{
+	return x + y;
+}
+int	Sub(int x, int y)
+{
+	return x - y;
+}
+int	Mul(int x, int y)
+{
+	return x * y;
+}
+int	Div(int x, int y)
+{
+	return x / y;
+}
+void menu()
+{
+	printf("*****************************\n");
+	printf("******  1.Add    2.Sub  *****\n");
+	printf("********3.Mul    4.Div  *****\n");
+	printf("********0.Exit***************\n");
+	printf("*****************************\n");
+
+}
+
+int main()
+{
+	int input = 0;
+	do
+	{
+		menu();
+		printf("请选择:>");
+		scanf("%d", &input);
+		int x = 0;
+		int y = 0;
+		int(*pfarr[5])(int, int) = { 0,Add,Sub,Mul,Div };
+		if (input >= 1 && input <= 4)
+		{
+			printf("请输入两个操作数:>");
+			scanf("%d%d", &x, &y);
+			printf("%d\n", pfarr[input](x, y));
+		}
+		else
+			printf("选择错误！\n");
+	} while (input);
+
+	return 0;
+}
+```
+* 库函数qsort
+```c
+//库函数qsort
+//整型、浮点型、结构体排序.
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+#include<string.h>
+struct co_workers
+{
+	char name[20];//
+	int height;	  //cm
+};
+//整型比较
+int cmp_int(const void* e1, const void* e2)
+{
+	return *(int*)e1 - *(int*)e2;
+}
+//浮点型数组比较函数
+int cmp_float(const void* e1, const void* e2)
+{
+	return (int)(ceil(*(float*)e1 - *(float*)e2));
+}
+//结构体数组比较函数-by name
+int cmp_struct_by_name(const void* e1, const void* e2)
+{
+	return strcmp(((struct co_workers*)e1)->name, ((struct co_workers*)e2)->name);
+}
+//结构体数组比较函数-by height
+int cmp_struct_by_height(const void* e1, const void* e2)
+{
+	return (((struct co_workers*)e1)->height - ((struct co_workers*)e2)->height);
+}
+int main()
+{
+	int arr1[] = { 1,3,5,7,9,2,4,6,8,10 };
+	float arr2[] = { 1.0,2.1,2.2,1.8,3.1,4.5,6.6,9.5,8.7,3.3 };
+	struct co_workers arr3[3]= { {"lichao",180},{"zhangyu",190},{"sunyan",175} };
+	//void qsort(void* base, size_t nitems, size_t size, int (*compar)(const void*, const void*))
+	//			 起点地址	   数组长度	  数组每个元素大小	函数指针(排序元素1的地址，排序元素2的地址）
+	//整型排序
+	int sz_arr1 = sizeof(arr1) / sizeof(arr1[0]);//元素个数
+	int width_arr1 = sizeof(arr1[0]);			//元素字节大小
+	qsort(arr1, sz_arr1, width_arr1, cmp_int);
+
+	//浮点型排序
+	int sz_arr2 = sizeof(arr2) / sizeof(arr2[0]);//元素个数
+	int width_arr2 = sizeof(arr2[0]);			//元素字节大小
+	qsort(arr2, sz_arr2, width_arr2, cmp_float);
+
+	//结构体排序-by-name
+	//结构体排序-by-heights
+	int sz_arr3 = sizeof(arr3) / sizeof(arr3[0]);//元素个数
+	int width_arr3 = sizeof(arr3[0]);			//元素字节大小
+	qsort(arr3, sz_arr3, width_arr3, cmp_struct_by_name);
+	qsort(arr3, sz_arr3, width_arr3, cmp_struct_by_height);
+
+	return 0;
+}
+```
+* **注：**
+  * 库函数qsort,支持各种类型数据排序
+  * 比较函数自定义，函数指针回调函数
+---
+* ***自定义my_bubble_sort函数实现类似qsort类似排序功能***
+```c
+//基于基本冒泡排序思想，自定义实现类似库函数qsort的功能
+//支持整型、浮点型、结构体等多种类型数组排序
+//flag排序标志位，排序ok后直接break跳出循环
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+#include<string.h>
+struct co_workers
+{
+	char name[20];//
+	int height;	  //cm
+};
+//整型比较
+int cmp_int(const void* e1, const void* e2)
+{
+	return *(int*)e1 - *(int*)e2;
+}
+//浮点型数组比较函数
+int cmp_float(const void* e1, const void* e2)
+{
+	return (int)(ceil(*(float*)e1 - *(float*)e2));
+}
+//结构体数组比较函数-by name
+int cmp_struct_by_name(const void* e1, const void* e2)
+{
+	return strcmp(((struct co_workers*)e1)->name, ((struct co_workers*)e2)->name);
+}
+//结构体数组比较函数-by height
+int cmp_struct_by_height(const void* e1, const void* e2)
+{
+	return (((struct co_workers*)e1)->height - ((struct co_workers*)e2)->height);
+}
+
+//可实现多种类型数组排序的扩展型my_bubble_sort
+void Swap(char* buf1, char* buf2, int width)
+{
+	int i = 0;
+	for (i = 0; i < width; i++)
+	{
+		char tmp = *buf1;
+		*buf1 = *buf2;
+		*buf2 = tmp;
+		buf1++;
+		buf2++;
+	}
+}
+void my_bubble_sort(void* base, int sz, int width, int(*cmp)(const void*, const void*))
+{
+	int i = 0;
+	//比较的趟数
+	for (i = 0; i < sz - 1; i++)
+	{
+		int flag = 1;//假设已经排序ok
+		int j = 0;
+		//每趟比较的对数
+		for (j = 0; j < sz - 1 - i; j++)
+		{	//两个元素比较
+			if (cmp((char*)base + j * width, (char*)base + (j + 1) * width) > 0)//	(char*)base + j * width //(char*)base+(j+1)*width
+			{
+				//交换
+				Swap((char*)base + j * width, (char*)base + (j + 1) * width, width);
+				//flag = 0;//需要重排
+			}
+		}
+		if (flag == 1)
+			break;
+	}
+}
+int main()
+{
+	//int arr1[] = { 1,3,5,7,9,2,4,6,8,10 };
+	int arr1[] = { 1,2,3,4,5,6,7,8,9,10 };
+
+	float arr2[] = { 1.0,2.1,2.2,1.8,3.1,4.5,6.6,9.5,8.7,3.3 };
+	struct co_workers arr3[3]= { {"lichao",180},{"zhangyu",190},{"sunyan",175} };
+	//void qsort(void* base, size_t nitems, size_t size, int (*compar)(const void*, const void*))
+	//			 起点地址	   数组长度	  数组每个元素大小	函数指针(排序元素1的地址，排序元素2的地址）
+	//整型排序
+	int sz_arr1 = sizeof(arr1) / sizeof(arr1[0]);//元素个数
+	int width_arr1 = sizeof(arr1[0]);			
+	my_bubble_sort(arr1, sz_arr1, width_arr1, cmp_int);
+
+	//浮点型排序
+	int sz_arr2 = sizeof(arr2) / sizeof(arr2[0]);//元素个数
+	int width_arr2 = sizeof(arr2[0]);			
+	my_bubble_sort(arr2, sz_arr2, width_arr2, cmp_float);
+
+	//结构体排序-by-name
+	//结构体排序-by-heights
+	int sz_arr3 = sizeof(arr3) / sizeof(arr3[0]);//元素个数
+	int width_arr3 = sizeof(arr3[0]);			
+	my_bubble_sort(arr3, sz_arr3, width_arr3, cmp_struct_by_name);
+	my_bubble_sort(arr3, sz_arr3, width_arr3, cmp_struct_by_height);
+
+	return 0;
+}
+```
+* 注：
+  * 和基本的冒泡排序思想一致；
+  * 函数指针（回调函数）；
+  * flag排序标志位
