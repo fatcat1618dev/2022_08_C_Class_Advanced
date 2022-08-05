@@ -906,3 +906,126 @@ int main()
 //a b c d e
 ````
 *注:三个条件：①各对1半；②和为5；③积为120*
+#### ***左旋转字符***
+```c
+//左旋转字符
+//如原字符abcdef,左旋转1个字符fabcde；左旋转2个字符efabcd
+//方法1，暴力求解,循环交换
+#include<stdio.h>
+#include<string.h>
+#include<assert.h>
+void left_move(char* str, int k)
+{
+	assert(str != NULL);
+	int i = 0;
+	int sz = strlen(str);
+	for (i = 0; i < k; i++)
+	{
+		char tmp = *str;
+		int j = 0;
+		for (j = 0; j < sz-1; j++)
+		{
+			str[j] = str[j + 1];
+		}
+		str[sz-1] = tmp;				//
+	}
+}
+int main()
+{
+	char arr[100]= { 0 };				//字符串存储
+	printf("请输入字符串:>");
+	//abcdef
+	scanf("%s", &arr);
+	left_move(arr, 2);
+
+	printf("旋转后字符串:>%s\n", arr);
+	return 0;
+}
+```
+```c
+//方法2
+#include<stdio.h>
+#include<string.h>
+#include<assert.h>
+void reverse(char* p1, char* p2)
+{
+	while (p1 < p2)
+	{
+		char tmp = *p1;
+		*p1 = *p2;
+		*p2 = tmp;
+		p1++;
+		p2--;
+	}
+}
+void left_move(char* p, int k)
+{
+	assert(p != NULL);
+	//abcdef
+	int sz = strlen(p);
+	reverse(p,p+k-1);//左边逆序 ba cdef
+	reverse(p+k,p+sz-1);//右边逆序 ba fedc
+	reverse(p,p+sz-1);//整体逆序 cdef ab
+}
+
+int main()
+{
+	char arr[100] = { 0 };				//字符串存储
+	printf("请输入字符串:>");
+	//abcdef
+	scanf("%s", &arr);
+	left_move(arr, 2);
+	printf("旋转后字符串:>%s\n", arr);
+	return 0;
+}
+```
+*注：①循环交换；②三次逆序*
+#### ***杨氏矩阵-查找某数-***
+```c
+//题目：杨氏矩阵——剑指offer
+//内容：有1个数字矩阵，矩阵的每行从左到右递增，从下到上递增，请编写程序在矩阵中查找某个数字。
+//要求：时间复杂度＜O(N).
+//1 2 3
+//2 3 4
+//3 4 5
+//int find_num(int arr[][3], int k, int*px, int*py)//数组传参
+int find_num(int(*arr)[3], int k, int* px, int* py)//指针传参
+
+{
+	int x = 0;			//行
+	int y = *py-1;	//列
+	while (y >= 0 && x <= *px - 1)
+	{
+		if(arr[x][y]<k)
+		{
+			x++;
+		}
+		else if (arr[x][y] > k)
+		{
+			y--;
+		}
+		else
+		{
+			*px = x;
+			*py = y;
+			return 1;
+		}
+	}
+	return 0;
+}
+int main()
+{
+	int arr[][3] = { {1,2,3},{2,3,4},{3,4,5} };
+	int k = 5;//要查找的数字
+	int x = 3;
+	int y = 3;
+	int ret = find_num(arr, k, &x, &y);
+	if (ret == 1)
+		printf("找到了，下标(%d,%d)\n", x, y);
+	else
+		printf("找不到！\n");
+	return 0;
+}
+
+//小结：①杨氏矩阵；②二维矩阵传参(数组、指针传参)；③返回型参数。
+```
