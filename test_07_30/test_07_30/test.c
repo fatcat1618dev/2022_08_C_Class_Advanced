@@ -550,111 +550,112 @@
 //	return 0;
 //}
 
-//指针题1
-int main()
-{
-	int a[5] = { 1,2,3,4,5 };
-	int* ptr = (int*)(&a + 1);
-	printf("%d %d\n", *(a + 1), *(ptr - 1));
-	return 0;
-}
-//2 5	*(a+1)=a[1]
+////指针题1
+//int main()
+//{
+//	int a[5] = { 1,2,3,4,5 };
+//	int* ptr = (int*)(&a + 1);
+//	printf("%d %d\n", *(a + 1), *(ptr - 1));
+//	return 0;
+//}
+////2 5	*(a+1)=a[1]
+//
+////指针题2
+//struct test
+//{
+//	int Num;
+//	char* pcName;
+//	short sDate;
+//	char cha[2];
+//	short sBa[4];
+//}*p;
+////假设p的值为0x10 0000，已知结构体Test类型的变量大小20个字节
+//int main()
+//{
+//	p = (struct Test*)0x100000;
+//	printf("%p\n", p + 0x1);
+//	printf("%p\n", (unsigned long)p + 0x1);
+//	printf("%p\n", (unsigned int*)p + 0x1);
+//
+//	return 0;
+//}
+////☆指针+-整数	100014	100001	100004
+//
+////指针题3
+//int main()
+//{
+//	int a[4] = { 1,2,3,4 };
+//	int* ptr1 = (int*)(&a + 1);
+//	int* ptr2 = (int*)((int)a + 1);
+//	printf("%x %x", ptr1[-1], *ptr2);
+//
+//	return 0;
+//}
+////☆ 4 2000000
+////01000000 02000000 03000000 04000000,大小端字节序
+//
+////指针题4
+//int main()
+//{
+//	int a[3][2] = { (0,1),(2,3),(4,5) };
+//	int* p;
+//	p = a[0];
+//	printf("%d\n", p[0]);
+//
+//	return 0;
+//}
+////a[0][0],首行首元素
+////逗号表达式
+//
+////指针题5
+//int main()
+//{
+//	int a[5][5];
+//	int(*p)[4];
+//	p = a;
+//	printf("%p %d\n", &p[4][2] - &a[4][2], &p[4][2] - &a[4][2]);
+//
+//	return 0;
+//}
+////FFFFFFFC -4
+//
+////指针题6
+//int main()
+//{
+//	int aa[2][5] = { 1,2,3,4,5,6,7,8,9,10 };
+//	int* ptr1 = (int*)(&aa + 1);
+//	int* ptr2 = (int*)(*(aa + 1));
+//	printf("%d,%d\n", *(ptr1 - 1), *(ptr2 - 1));
+//
+//	return 0;
+//}
+////☆ 10 5
+//
+////指针题7
+//int main()
+//{
+//	char* a[] = { "work","at","alibaba" };
+//	char** pa = a;
+//	pa++;
+//	printf("%s\n", *pa);
+//
+//	return 0;
+//}
+////at
+//
+////指针题8
+//int main()
+//{
+//	char* c[] = { "ENTER","NEW","POINT","FIRST" };
+//	char** cp[] = { c + 3,c + 2,c + 1,c };
+//	char*** cpp = cp;
+//
+//	printf("%s\n", **++cpp);
+//	printf("%s\n", *-- * ++cpp + 3);
+//	printf("%s\n", *cpp[-2] + 3);
+//	printf("%s\n", cpp[-1][-1] + 1);
+//
+//	return 0;
+//}
+////POINT ER （此时cpp指向c+1位置）ST EW
 
-//指针题2
-struct test
-{
-	int Num;
-	char* pcName;
-	short sDate;
-	char cha[2];
-	short sBa[4];
-}*p;
-//假设p的值为0x10 0000，已知结构体Test类型的变量大小20个字节
-int main()
-{
-	p = (struct Test*)0x100000;
-	printf("%p\n", p + 0x1);
-	printf("%p\n", (unsigned long)p + 0x1);
-	printf("%p\n", (unsigned int*)p + 0x1);
-
-	return 0;
-}
-//☆指针+-整数	100014	100001	100004
-
-//指针题3
-int main()
-{
-	int a[4] = { 1,2,3,4 };
-	int* ptr1 = (int*)(&a + 1);
-	int* ptr2 = (int*)((int)a + 1);
-	printf("%x %x", ptr1[-1], *ptr2);
-
-	return 0;
-}
-//☆ 4 2000000
-//01000000 02000000 03000000 04000000,大小端字节序
-
-//指针题4
-int main()
-{
-	int a[3][2] = { (0,1),(2,3),(4,5) };
-	int* p;
-	p = a[0];
-	printf("%d\n", p[0]);
-
-	return 0;
-}
-//a[0][0],首行首元素
-//逗号表达式
-
-//指针题5
-int main()
-{
-	int a[5][5];
-	int(*p)[4];
-	p = a;
-	printf("%p %d\n", &p[4][2] - &a[4][2], &p[4][2] - &a[4][2]);
-
-	return 0;
-}
-//FFFFFFFC -4
-
-//指针题6
-int main()
-{
-	int aa[2][5] = { 1,2,3,4,5,6,7,8,9,10 };
-	int* ptr1 = (int*)(&aa + 1);
-	int* ptr2 = (int*)(*(aa + 1));
-	printf("%d,%d\n", *(ptr1 - 1), *(ptr2 - 1));
-
-	return 0;
-}
-//☆ 10 5
-
-//指针题7
-int main()
-{
-	char* a[] = { "work","at","alibaba" };
-	char** pa = a;
-	pa++;
-	printf("%s\n", *pa);
-
-	return 0;
-}
-//at
-
-//指针题8
-int main()
-{
-	char* c[] = { "ENTER","NEW","POINT","FIRST" };
-	char** cp[] = { c + 3,c + 2,c + 1,c };
-	char*** cpp = cp;
-
-	printf("%s\n", **++cpp);
-	printf("%s\n", *-- * ++cpp + 3);
-	printf("%s\n", *cpp[-2] + 3);
-	printf("%s\n", cpp[-1][-1] + 1);
-
-	return 0;
-}
-//POINT ER （此时cpp指向c+1位置）ST EW
