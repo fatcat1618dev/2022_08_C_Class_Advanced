@@ -58,7 +58,7 @@ sscanf/sprintf	从字符串读、输出存储到字符串
 //	if (pf == NULL)
 //	{
 //		//printf("%s\n",strerror(errno));
-//		perror(pf);
+//		perror("open 上上级test文件失败！\n");
 //		return 0;
 //	}
 //}
@@ -164,7 +164,7 @@ sscanf/sprintf	从字符串读、输出存储到字符串
 //	return 0;
 //}
 
-////二进制形式写、读文件
+//二进制形式写、读文件
 //struct s
 //{
 //	char name[10];
@@ -212,3 +212,75 @@ sscanf/sprintf	从字符串读、输出存储到字符串
 //	return 0;
 //}
 
+
+/*
+fseek	文件的随机读写,根据文件指针的位置和偏移量来定位指针
+		fseek(FILE *stream,long offset,int origin);//SEEK_CUR,SEEK_END,SEEK_SET
+ftell	返回文件指针相对于起始位置的偏移量
+		long int ftell(FILE*stream)
+rewind	让文件指针的位置回到文件起始位置
+		void rewind(FILE*stream)
+文件结束判定
+feof	feof用于当文件读取结束的时候，判断是读取失败、还是遇到文件尾结束
+	1.文本文件读取是否结束，判断返回值是否为EOF（fgetc),或者NULL（fgets)
+	2.二进制文件的读取结束判断，判断返回值是否小于实际要读的个数 fread
+
+perror	不用带头文件，strerror简化版？
+*/
+int main()
+{
+	//perror
+	FILE* pf = fopen("test.txt", "r");
+	if (pf == NULL)
+	{
+		perror("Open Haomo.txt Error\n");
+		return 0;
+	}
+	//读文件
+	int ch = 0;
+	while ((ch = fgetc(pf)) != EOF)
+	{
+		putchar(ch);
+	}
+	if (ferror(pf))
+		printf("error\n");
+	else if (feof(pf))
+		printf("end of file!\n");
+	//关文件
+	fclose(pf);
+	pf = NULL;
+}
+
+//#pragma pack(4)/*4字节对齐 平台vs2019 c*/
+//int main(int argc, char* argv[])
+//{
+//	struct tagTest1
+//	{
+//		short a;//0 1
+//		char d;//2
+//		//3 
+//		long b;//4-7
+//		long c;//8-11
+//	};//12
+//	struct tagTest2
+//	{
+//		long b;//0-3
+//		short c;//4-5
+//		char d;//6
+//		long a;//8-11
+//	};//12
+//	struct tagTest3
+//	{
+//		short c;//0-1
+//		long b;//4-7
+//		char d;//8
+//		long a;//12-15
+//	};//16
+//	struct tagTest1 stT1;
+//	struct tagTest2 stT2;
+//	struct tagTest3 stT3;
+//
+//	printf("%d %d %d", sizeof(stT1), sizeof(stT2), sizeof(stT3));//12 12 16
+//
+//	return 0;
+//}
